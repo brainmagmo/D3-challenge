@@ -55,7 +55,10 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
     .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]));
+    .attr("cx", function(d) {
+
+        return newXScale(d[chosenXAxis]);
+    });
 
   return circlesGroup;
 }
@@ -100,7 +103,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   return circlesGroup;
 }
-
+ 
 // Retrieve data from the CSV file and execute everything below
 d3.csv("../../assets/data/data.csv").then(function(data, err) {
   if (err) throw err;
