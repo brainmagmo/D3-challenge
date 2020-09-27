@@ -9,6 +9,19 @@ html {
   min-height: 100%;
 }
 
+h1 {
+  text-align: center;
+}
+
+h2, p {
+  padding-left: 5%;
+  
+}
+/* 
+.gray {
+  background-color: rgb(180, 161, 161);
+} */
+
 body {
   /* Padding bottom by footer height */
   padding-bottom: 80px;

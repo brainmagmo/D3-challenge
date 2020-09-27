@@ -3,9 +3,9 @@ var svgHeight = window.innerHeight;
 
 var margin = {
   top: 20,
-  right: 40,
+  right: 200,
   bottom: 80,
-  left: 100
+  left: 120
 };
 
 var width = svgWidth - margin.left - margin.right;
@@ -78,7 +78,7 @@ function renderTexts(circlesText, newXScale, chosenXAxis) {
 }
 
 // function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup) {
+function updateToolTip(chosenXAxis, circlesGs) {
 
   var labelOfX;
 
@@ -105,9 +105,9 @@ function updateToolTip(chosenXAxis, circlesGroup) {
       return (`${d.state}<br>${labelOfX} ${d[chosenXAxis]}<br>${labelOfY} ${d[chosenYAxis]}`);
     });
 
-  circlesGroup.call(toolTip);
+  circlesGs.call(toolTip);
 
-  circlesGroup.on("mouseover", function(data) {
+  circlesGs.on("mouseover", function(data) {
     toolTip.show(data);
   })
     // onmouseout event
@@ -115,7 +115,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
       toolTip.hide(data);
     });
 
-  return circlesGroup;
+  return circlesGs;
 }
  
 // Retrieve data from the CSV file and execute everything below
@@ -194,13 +194,21 @@ d3.csv("assets/data/data.csv").then(function(data, err) {
     .text("Mean Age");
 
   // append y axis
-  chartGroup.append("text")
+  var obesityLabel = chartGroup.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
+    .attr("y", 0 - margin.left/2)
     .attr("x", 0 - (height / 2))
     .attr("dy", "1em")
-    .classed("axis-text", true)
+    .classed("active", true)
     .text("Obesity Rate");
+  
+  var smokerLabel = chartGroup.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left/2 -20)
+    .attr("x", 0 - (height / 2))
+    .attr("dy", "1em")
+    .classed("inactive", true)
+    .text("Smoking Rate");
 
   // updateToolTip function above csv import
   var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
@@ -230,7 +238,7 @@ d3.csv("assets/data/data.csv").then(function(data, err) {
         circlesText = renderTexts(circlesText, xLinearScale, chosenXAxis);
 
         // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
+        circlesGroup = updateToolTip(chosenXAxis, circlesGs);
 
         // changes classes to change bold text
         if (chosenXAxis === "age") {
